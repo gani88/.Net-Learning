@@ -12,3 +12,4 @@ C:\Users\Enigma\Documents\.NET\MyFirstConsoleApp\obj\Debug\net8.0\refint\MyFirst
 C:\Users\Enigma\Documents\.NET\MyFirstConsoleApp\obj\Debug\net8.0\MyFirstConsoleApp.pdb
 C:\Users\Enigma\Documents\.NET\MyFirstConsoleApp\obj\Debug\net8.0\MyFirstConsoleApp.genruntimeconfig.cache
 C:\Users\Enigma\Documents\.NET\MyFirstConsoleApp\obj\Debug\net8.0\ref\MyFirstConsoleApp.dll
+C:\Users\Enigma\Documents\.NET\MyFirstConsoleApp\obj\Debug\net8.0\MyFirstConsoleApp.sourcelink.json
