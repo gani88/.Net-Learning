@@ -15,7 +15,29 @@ app.Use(async (context, next) => {
     Console.WriteLine($"[{context.Request.Method} {context.Request.Path} {DateTime.UtcNow}] Completed");
 });
 
+
 var todos = new List<Todo>();
+
+app.MapPost("/todos", (Todo task) => {
+    todos.Add(task);
+    return TypedResults.Created("/todos/{id}", task);
+}).AddEndpointFilter(async (context, next) => {
+    var taskArgument = context.GetArgument<Todo>(0);
+    var errors = new Dictionary<string, string[]>();
+    
+    if (taskArgument.DueDate < DateTime.UtcNow) {
+        errors.Add(nameof(Todo.DueDate), [ "Date cannot be in the past" ]);
+    }
+    if (taskArgument.IsCompleted) {
+        errors.Add(nameof(Todo.IsCompleted), [ "Cannot add Completed todo" ]);
+    }
+
+    if (errors.Count > 0) {
+        return Results.ValidationProblem(errors);
+    }
+
+    return await next(context);
+});
 
 app.MapGet("/todos", () => todos);
 
@@ -24,10 +46,6 @@ app.MapGet("/todos/{id}", Results<Ok<Todo>, NotFound> (int id) => {
     return targetTodo is null ? TypedResults.NotFound() : TypedResults.Ok(targetTodo);
 });
 
-app.MapPost("/todos", (Todo task) => {
-    todos.Add(task);
-    return TypedResults.Created("/todos/{id}", task);
-});
 
 app.MapDelete("/todos/{id}", (int id) => {
     todos.RemoveAll(t => id == t.Id);
